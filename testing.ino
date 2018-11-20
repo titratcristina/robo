@@ -61,7 +61,7 @@ void loop()
   }
   */
   
-  if (Ldistance > 10 && Fdistance <= 10)
+  if (Ldistance > 10 && Fdistance <= 10)        // Inca nu am setat Fdistance !!!
   {
     left();
   }
