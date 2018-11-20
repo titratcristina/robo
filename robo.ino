@@ -1,10 +1,10 @@
-#define LS 12      // Senzor stanga
-#define RS 11      // Senzor dreapta
+#define LS 12      // Senzor infra-rosu stanga
+#define RS 11      // Senzor infra-rosu dreapta
 
-#define LM1 4       // Motor stanga
-#define LM2 5       // Motor stanga
-#define RM1 2       // Motor dreapta
-#define RM2 3       // Motor dreapta
+#define LM2 5       // Motor stanga +
+#define LM1 4       // Motor stanga -
+#define RM1 2       // Motor dreapta +
+#define RM2 3       // Motor dreapta -
 
 
 void setup()
