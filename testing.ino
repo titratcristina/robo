@@ -1,16 +1,30 @@
-#define LS 12      // Senzor stanga
-#define RS 11      // Senzor dreapta
+#define LS 12      // Senzor infra-rosu stanga
+#define RS 11      // Senzor infra-rosu dreapta
+
+#define LDStrig 6       // OUT - Senzor distanta stanga
+#define LDSecho 7       // IN - Senzor distanta stanga
+
+/* Nu avem destui pini !!!
+#define RDS 8       // Senzor distanga dreapta
+#define FDS 9       // Senzor distanta frontal
+*/
 
 #define LM1 4       // Motor stanga
 #define LM2 5       // Motor stanga
 #define RM1 2       // Motor dreapta
 #define RM2 3       // Motor dreapta
 
+//Variabilele pentru senzorul de distanta din partea stanga (Am pus variabila globala ca sa fie direct 0 daca nu ia nicio valoare)
+long Lduration;
+int Ldistance;
 
 void setup()
 {
   pinMode(LS, INPUT);
   pinMode(RS, INPUT);
+  
+  pinMode(LDStrig, OUTPUT);       // Trimite semnal distanta
+  pinMode(LDSecho, INPUT);        // Receptioneaza semnal distanta
   
   pinMode(LM1, OUTPUT);
   pinMode(LM2, OUTPUT);
@@ -19,8 +33,10 @@ void setup()
 }
 
 
+
 void loop()
 {
+  /*
   // Daca senzorul returneaza valoarea 0 => Senzorul este pe negru
   // Daca senzorul returneaza valoarea 1 => Senzorul este pe alb
   
@@ -43,6 +59,30 @@ void loop()
   {
     stopNow();
   }
+  */
+  
+  if (Ldistance > 10 && Fdistance <= 10)
+  {
+    left();
+  }
+  
+  
+  
+}
+
+void leftDistance()       // Calculul distantei - Stanga
+{
+  digitalWrite(LDStrig, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(LDStrig, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(LDStrig, LOW);
+
+
+  Lduration = pulseIn(LDSecho, HIGH);
+
+  Ldistance = duration*0.034/2;        // Durata*Viteza sunetului = Distanta in centimetri
 }
 
 
