@@ -1,49 +1,50 @@
-/*------ Arduino Line Follower Code----- */
-/*-------definning Inputs------*/
-#define LS 12      // left sensor
-#define RS 11      // right sensor
+#define LS 12      // Senzor stanga
+#define RS 11      // Senzor dreapta
 
-/*-------definning Outputs------*/
-#define LM1 4       // left motor
-#define LM2 5       // left motor
-#define RM1 2       // right motor
-#define RM2 3       // right motor
+#define LM1 4       // Motor stanga
+#define LM2 5       // Motor stanga
+#define RM1 2       // Motor dreapta
+#define RM2 3       // Motor dreapta
+
 
 void setup()
 {
   pinMode(LS, INPUT);
   pinMode(RS, INPUT);
+  
   pinMode(LM1, OUTPUT);
   pinMode(LM2, OUTPUT);
   pinMode(RM1, OUTPUT);
   pinMode(RM2, OUTPUT);
 }
 
+
 void loop()
 {
-  if(digitalRead(LS) && digitalRead(RS))     // Move Forward
+  // Daca senzorul da valoarea 0 => Senzorul este pe negru
+  // Daca senzorul da valoarea 1 => Senzorul este pe alb
+  
+  if(digitalRead(LS) && digitalRead(RS))     // Inainteaza (LS=0, RS=0)
   {
-    digitalWrite(LM1, LOW);
-    digitalWrite(LM2, HIGH);
-    digitalWrite(RM1, HIGH);
-    digitalWrite(RM2, LOW);
+    forward();
   }
   
-  if(!(digitalRead(LS)) && digitalRead(RS))     // Turn right
+  if(!(digitalRead(LS)) && digitalRead(RS))     // Viraj dreapta (LS=1, RS=0)
   {
     right();
   }
   
-  if(digitalRead(LS) && !(digitalRead(RS)))     // turn left
+  if(digitalRead(LS) && !(digitalRead(RS)))     // Viraj stanga (LS=0, RS=1)
   {
     left();
   }
   
-  if(!(digitalRead(LS)) && !(digitalRead(RS)))     // stop
+  if(!(digitalRead(LS)) && !(digitalRead(RS)))     // Stop (LS=1, RS=1)
   {
-   stopNow();
+    stopNow();
   }
 }
+
 
 void forward()
 {
@@ -76,4 +77,3 @@ void stopNow()
   digitalWrite(RM1, LOW);
   digitalWrite(RM2, LOW);
 }
-
