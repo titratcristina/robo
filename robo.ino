@@ -21,8 +21,8 @@ void setup()
 
 void loop()
 {
-  // Daca senzorul da valoarea 0 => Senzorul este pe negru
-  // Daca senzorul da valoarea 1 => Senzorul este pe alb
+  // Daca senzorul returneaza valoarea 0 => Senzorul este pe negru
+  // Daca senzorul returneaza valoarea 1 => Senzorul este pe alb
   
   if(digitalRead(LS) && digitalRead(RS))     // Inainteaza (LS=0, RS=0)
   {
