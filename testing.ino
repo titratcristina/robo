@@ -1,5 +1,7 @@
-#define LS 12      // Senzor infra-rosu stanga
-#define RS 11      // Senzor infra-rosu dreapta
+// DE INLOCUIT PE PLACUTA LS 12 cu 13 si RS 11 cu 12 !!!
+
+#define LS 13      // Senzor infra-rosu stanga
+#define RS 12      // Senzor infra-rosu dreapta
 
 #define LDStrig 6       // OUT - Senzor distanta stanga
 #define LDSecho 7       // IN - Senzor distanta stanga
