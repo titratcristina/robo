@@ -82,7 +82,7 @@ void leftDistance()       // Calculul distantei - Stanga
 
   Lduration = pulseIn(LDSecho, HIGH);
 
-  Ldistance = Lduration*0.034/2;        // Durata*Viteza sunetului = Distanta in centimetri
+  Ldistance = Lduration*0.034/2;        // Formula pentru distanta in centimetri
 }
 
 
