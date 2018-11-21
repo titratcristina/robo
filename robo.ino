@@ -92,10 +92,10 @@ void loop()
 void leftDistance()       // Calculul distantei - Stanga
 {
   digitalWrite(ldsTrig, LOW);       // Ne asiguram ca senzorul nu este deja pornit
-  delayMicroseconds(20);
+  delayMicroseconds(2);
 
   digitalWrite(ldsTrig, HIGH);       // Trimite semnal
-  delayMicroseconds(100);
+  delayMicroseconds(10);
   digitalWrite(ldsTrig, LOW);
 
   Lduration = pulseIn(ldsEcho, HIGH);
@@ -109,10 +109,10 @@ void leftDistance()       // Calculul distantei - Stanga
 void rightDistance()       // Calculul distantei - Dreapta
 {
   digitalWrite(rdsTrig, LOW);
-  delayMicroseconds(20);
+  delayMicroseconds(2);
 
   digitalWrite(rdsTrig, HIGH);
-  delayMicroseconds(100);
+  delayMicroseconds(10);
   digitalWrite(rdsTrig, LOW);
 
 
@@ -127,10 +127,10 @@ void rightDistance()       // Calculul distantei - Dreapta
 void forwardDistance()       // Calculul distantei - Inainte
 {
   digitalWrite(fdsTrig, LOW);
-  delayMicroseconds(20);
+  delayMicroseconds(2);
 
   digitalWrite(fdsTrig, HIGH);
-  delayMicroseconds(100);
+  delayMicroseconds(10);
   digitalWrite(fdsTrig, LOW);
 
 
