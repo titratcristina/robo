@@ -1,27 +1,21 @@
-// DE INLOCUIT PE PLACUTA LS 12 cu 13 si RS 11 cu 12 !!!
-
 #define IRS 13      // Senzor infra-rosu
 
-#define LDStrig 6       // OUT - Senzor distanta stanga
-#define LDSecho 7       // IN - Senzor distanta stanga
+#define ldsTrig 6       // OUT - Senzor distanta stanga
+#define ldsEcho 7       // IN - Senzor distanta stanga
 
-#define RDStrig 8        // OUT - Senzor distanta dreapta
-#define RDSecho 9        // IN - Senzor distanta dreapta
+#define rdsTrig 8        // OUT - Senzor distanta dreapta
+#define rdsEcho 9        // IN - Senzor distanta dreapta
 
-#define FDStrig 10       // OUT - Senzor distanta fata
-#define FDSecho 11       // IN - Senzor distanta fata
-
-/* Nu avem destui pini !!!
-#define RDS 8       // Senzor distanga dreapta
-#define FDS 9       // Senzor distanta frontal
-*/
+#define fdsTrig 10       // OUT - Senzor distanta fata
+#define fdsEcho 11       // IN - Senzor distanta fata
 
 #define LM1 4       // Motor stanga
 #define LM2 5       // Motor stanga
 #define RM1 2       // Motor dreapta
 #define RM2 3       // Motor dreapta
 
-//Variabilele pentru senzorul de distanta din partea stanga (Am pus variabila globala ca sa fie direct 0 daca nu ia nicio valoare)
+
+//Variabilele pentru senzorii de distanta
 int Lduration;
 int Ldistance;
 
@@ -31,133 +25,125 @@ int Rdistance;
 int Fduration;
 int Fdistance;
 
+
 void setup()
 {
-  pinMode(IRS, INPUT);
+  pinMode(IRS, INPUT);       // Receptioneaza semnal infra-rosu
   
-  pinMode(LDStrig, OUTPUT);       // Trimite semnal distanta
-  pinMode(LDSecho, INPUT);        // Receptioneaza semnal distanta
+  pinMode(ldsTrig, OUTPUT);       // Trimite semnal distanta stanga
+  pinMode(ldsEcho, INPUT);        // Receptioneaza semnal distanta
 
-  pinMode(RDStrig, OUTPUT);       // Trimite semnal distanta
-  pinMode(RDSecho, INPUT);
+  pinMode(rdsTrig, OUTPUT);
+  pinMode(rdsEcho, INPUT);
 
-  pinMode(FDStrig, OUTPUT);       // Trimite semnal distanta
-  pinMode(FDSecho, INPUT);
+  pinMode(fdsTrig, OUTPUT);
+  pinMode(fdsEcho, INPUT);
   
   pinMode(LM1, OUTPUT);
   pinMode(LM2, OUTPUT);
   pinMode(RM1, OUTPUT);
   pinMode(RM2, OUTPUT);
 
-  Serial.begin(9600);
-
+  Serial.begin(9600);       // Porneste comunicarea Arduino->Consola PC
 }
+
 
 void loop()
 {
-  /*
-  // Daca senzorul returneaza valoarea 0 => Senzorul este pe negru
-  // Daca senzorul returneaza valoarea 1 => Senzorul este pe alb
+  // Daca senzorul infra-rosu returneaza valoarea 0 => Senzorul este pe negru
+  // Daca senzorul infra-rosu returneaza valoarea 1 => Senzorul este pe alb
   
-  if(digitalRead(LS) && digitalRead(RS))     // Inainteaza (LS=0, RS=0)
+  if(!(digitalRead(IRS)))       // Verifica daca robotul a ajuns la finish
   {
-    forward();
-  }
-  
-  if(!(digitalRead(LS)) && digitalRead(RS))     // Viraj dreapta (LS=1, RS=0)
-  {
-    right();
-  }
-  
-  if(digitalRead(LS) && !(digitalRead(RS)))     // Viraj stanga (LS=0, RS=1)
-  {
-    left();
-  }
-  
-  if(!(digitalRead(LS)) && !(digitalRead(RS)))     // Stop (LS=1, RS=1)
-  {
-    stopNow();
-  }
-  */
+  // Initializeaza functiile pentru calculul distantei
   leftDistance();
   rightDistance();
   forwardDistance();
 
-  if (Fdistance > 10)
+  // Rezolvarea labirintului
+  if (Fdistance > 10 && Ldistance <=10 && Rdistance <=10)
   {
     forward();
-  }
-  
-  else if (Ldistance <= 3)
-  {
-    right();
-  } 
 
-  else if (Rdistance <= 3)
+  } else if (Fdistance <=10 && Ldistance >10 && Rdistance <=10) 
   {
     left();
-  } 
-  
-  else 
-  {
-    stopNow();
-  }
-  
-  
-}
 
+  } else if (Fdistance <=10 && Ldistance <=10 && Rdistance >10)
+  {
+    right();
+  
+  } else if (Fdistance >10 && Ldistance >10 && Rdistance >10)
+  {
+    left();
+
+  } else if (Fdistance <=10 && Ldistance <=10 && Rdistance <=10)
+  {
+    fullLeft();
+  }
+
+
+  } else { stopNow(); }       // Robotul a ajuns la finish
+  
+}       // Final LOOP
+
+
+// Calcul distante
 void leftDistance()       // Calculul distantei - Stanga
 {
-  digitalWrite(LDStrig, LOW);
+  digitalWrite(ldsTrig, LOW);       // Ne asiguram ca senzorul nu este deja pornit
   delayMicroseconds(20);
 
-  digitalWrite(LDStrig, HIGH);
+  digitalWrite(ldsTrig, HIGH);       // Trimite semnal
   delayMicroseconds(100);
-  digitalWrite(LDStrig, LOW);
+  digitalWrite(ldsTrig, LOW);
 
-
-  Lduration = pulseIn(LDSecho, HIGH);
+  Lduration = pulseIn(ldsEcho, HIGH);
 
   Ldistance = Lduration * 0.034 / 2;        // Formula pentru distanta in centimetri
-  Serial.print("Ldistance ");
+
+  Serial.print("Ldistance: ");       // Afiseaza in consola valorile date de senzor
   Serial.println(Ldistance);
 }
 
 void rightDistance()       // Calculul distantei - Dreapta
 {
-  digitalWrite(RDStrig, LOW);
+  digitalWrite(rdsTrig, LOW);
   delayMicroseconds(20);
 
-  digitalWrite(RDStrig, HIGH);
+  digitalWrite(rdsTrig, HIGH);
   delayMicroseconds(100);
-  digitalWrite(RDStrig, LOW);
+  digitalWrite(rdsTrig, LOW);
 
 
-  Rduration = pulseIn(RDSecho, HIGH);
+  Rduration = pulseIn(rdsEcho, HIGH);
 
-  Rdistance = Rduration * 0.034 / 2;        // Formula pentru distanta in centimetri
-  Serial.print("Rdistance ");
+  Rdistance = Rduration * 0.034 / 2;
+
+  Serial.print("Rdistance: ");
   Serial.println(Rdistance);
 }
 
 void forwardDistance()       // Calculul distantei - Inainte
 {
-  digitalWrite(FDStrig, LOW);
+  digitalWrite(fdsTrig, LOW);
   delayMicroseconds(20);
 
-  digitalWrite(FDStrig, HIGH);
+  digitalWrite(fdsTrig, HIGH);
   delayMicroseconds(100);
-  digitalWrite(FDStrig, LOW);
+  digitalWrite(fdsTrig, LOW);
 
 
-  Fduration = pulseIn(FDSecho, HIGH);
+  Fduration = pulseIn(fdsEcho, HIGH);
 
-  Fdistance = Fduration * 0.034 / 2;        // Formula pentru distanta in centimetri
-  Serial.print("Fdistance ");
+  Fdistance = Fduration * 0.034 / 2;
+
+  Serial.print("Fdistance: ");
   Serial.println(Fdistance);
 }
 
 
+// Miscarile robotului
 void forward()
 {
   digitalWrite(LM1, HIGH);
@@ -177,9 +163,17 @@ void right()
 void left()
 {
   digitalWrite(LM1, LOW);
+  digitalWrite(LM2, LOW);
+  digitalWrite(RM1, LOW);
+  digitalWrite(RM2, HIGH);
+}
+
+void fullLeft()
+{
+  digitalWrite(LM1, LOW);
   digitalWrite(LM2, HIGH);
   digitalWrite(RM1, LOW);
-  digitalWrite(RM2, LOW);
+  digitalWrite(RM2, HIGH);
 }
 
 void stopNow()
