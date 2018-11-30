@@ -176,6 +176,14 @@ void fullLeft()
   digitalWrite(RM2, HIGH);
 }
 
+void fullRight()
+{
+  digitalWrite(LM1, HIGH);
+  digitalWrite(LM2, LOW);
+  digitalWrite(RM1, HIGH);
+  digitalWrite(RM2, LOW);
+}
+
 void stopNow()
 {
   digitalWrite(LM1, LOW);
