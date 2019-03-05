@@ -146,10 +146,10 @@ void forwardDistance()       // Calculul distantei - Inainte
 // Miscarile robotului
 void forward()
 {
-  digitalWrite(LM1, HIGH);
-  digitalWrite(LM2, LOW);
-  digitalWrite(RM1, LOW);
-  digitalWrite(RM2, HIGH);
+   digitalWrite(LM1, LOW);
+  digitalWrite(LM2, HIGH);
+  digitalWrite(RM1, HIGH);
+  digitalWrite(RM2, LOW);
 }
 
 void right()
